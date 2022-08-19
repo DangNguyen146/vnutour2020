@@ -1,0 +1,54 @@
+image: php:7.2.5
+before_script:
+  - apt-get update -qq
+  - apt-get install -y -qq git
+phpunit tests:
+  stage: test
+  script:
+  - apt-get install unzip
+  - curl -sS https://getcomposer.org/installer | php
+  - php composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+  - cp .env.example .env
+  - php artisan key:generate
+
+unit feature test:
+    stage: test
+    only:
+      - 7.x
+    image: php:7.2.5-fpm
+    services:
+      - docker:dind
+      - mysql:latest
+    variables:
+      MYSQL DATABASE: "Laravel"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    script:
+      - apt-get update
+      - apt-get install unzip default-mysql-client -y
+      - docker-php-ext-install pdo_mysql bcmath
+      - curl https://getcomposer.org/download/2.2.3/composer.phar -o /usr/local/bin/composer
+      - chmod +x /usr/local/bin/composer
+      - composer update
+      - cp.env.example .env
+      - sed -i 's/DB_HOST-127.0.0.1/DB_HOST-mysql/' .env
+      - php artisan key: generate
+      - php artisan migrate
+      - php artisan serve &
+      - sleep 3
+      - php artisan test
+    artifacts:
+      paths:
+      - composer.lock
+      - composer.json
+      - vendor
+
+
+deploy to keroku:
+  stage: deploy
+  script:
+      - apt-get install -y ruby 3.1.2
+      - apt-get update -qy
+      - apt-get install -y ruby-dev
+      - gem install dpl
+      - gem install faraday -v 1.8.0
+      - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_API_KEY
