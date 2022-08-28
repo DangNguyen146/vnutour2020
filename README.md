@@ -2,5 +2,7 @@
 
 # How to run
     sh docker.sh
+# How to start
+    docker-compose up -d
 ## VNUTour
 Khoa Mạng Máy Tính và Truyền Thông 2022
