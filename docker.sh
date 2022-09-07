@@ -8,4 +8,4 @@ docker-compose exec app composer install
 docker-compose exec app php artisan migrate
 
 # cd /var/www/html
-docker-composer exec app chown -R www-data storage
+docker-compose exec app chown -R www-data storage

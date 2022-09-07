@@ -26,7 +26,7 @@
                             <div class="panel-body">
                                 <span class="arrow-alt"></span>
                                 <span class="timeline-icon bg-success"><i class="mdi mdi-circle"></i></span>
-                                <h4 class="text-success">Mở đăng ký</h4>
+                                <h4 class="text-success">Mở đăng ký13232332</h4>
                                 <p class="timeline-date text-muted"><small>06-10-2020</small></p>
                                 <p>Bắt đầu mở đăng ký tham gia chương trình </p>
                             </div>
